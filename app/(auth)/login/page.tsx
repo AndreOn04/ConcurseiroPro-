@@ -154,7 +154,7 @@ export default function LoginPage() {
             className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
           />
 
-          {erro && <p className="text-rd-400 text-xs text-center">{erro}</p>}
+          {erro && <p className="text-red-400 text-xs text-center">{erro}</p>}
 
           <button
             type="submit"
