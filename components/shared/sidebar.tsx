@@ -8,7 +8,7 @@ const navItems = [
   { href: "/cronograma", label: "Cronograma", icon: "🗓️" },
   { href: "/materias", label: "Matérias", icon: "📚" },
   { href: "/timer", label: "Timer", icon: "⏱️" },
-  { href: "/simulacoes", label: "Simulados", icon: "📝" },
+  // { href: "/simulacoes", label: "Questões & Simulados", icon: "📝" },
   { href: "/relatorias", label: "Relatórios", icon: "📊" },
 ];
 
