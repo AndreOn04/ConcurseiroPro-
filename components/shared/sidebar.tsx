@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "./theme-toggle";
 
 const navItems = [
   { href: "/dashboard", label: "Visão Geral", icon: "🏠" },
   { href: "/cronograma", label: "Cronograma", icon: "🗓️" },
   { href: "/materias", label: "Matérias", icon: "📚" },
-  { href: "/timer", label: "Timer", icon: "⏱️" },
+  { href: "/timer", label: "Pomodoro", icon: "⏱️" },
   // { href: "/simulacoes", label: "Questões & Simulados", icon: "📝" },
   { href: "/relatorias", label: "Relatórios", icon: "📊" },
 ];
@@ -42,7 +43,8 @@ export function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="px-6 py-6 border-t border-slate-800">
+      <div className="px-6 py-4 border-t border-slate-800 flex flex-col gap-3">
+        <ThemeToggle />
         <Link
           href="/"
           className="text-slate-600 hover:text-slate-400 text-xs transition-colors"

@@ -128,3 +128,79 @@
     @apply font-sans;
   }
 }
+
+/* Modo claro */
+.light body {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.light .bg-slate-950 {
+  background-color: #f1f5f9;
+}
+
+.light .bg-slate-900 {
+  background-color: #ffffff;
+}
+
+.light .bg-slate-800 {
+  background-color: #e2e8f0;
+}
+
+.light .border-slate-800 {
+  border-color: #cbd5e1;
+}
+
+.light .border-slate-700 {
+  border-color: #94a3b8;
+}
+
+.light .text-slate-400 {
+  color: #334155;
+}
+
+.light .text-slate-300 {
+  color: #1e293b;
+}
+
+.light .text-slate-500 {
+  color: #475569;
+}
+
+.light .text-slate-600 {
+  color: #334155;
+}
+
+.light .text-white {
+  color: #0f172a;
+}
+
+.light .text-slate-200 {
+  color: #1e293b;
+}
+
+.light .placeholder-slate-500::placeholder {
+  color: #94a3b8;
+}
+
+.light .text-slate-200 {
+  color: #1e293b;
+}
+
+.light .bg-slate-700 {
+  background-color: #cbd5e1;
+}
+
+.light .accent-indigo-500 {
+  accent-color: #6366f1;
+}
+
+/* Exceção — botões com fundo indigo sempre texto branco */
+.light .bg-indigo-600 *,
+.light .bg-indigo-500 *,
+.light a.bg-indigo-600,
+.light a.bg-indigo-500,
+.light button.bg-indigo-600,
+.light button.bg-indigo-500 {
+  color: #ffffff !important;
+}
