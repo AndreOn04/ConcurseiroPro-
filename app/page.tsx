@@ -140,7 +140,7 @@ export default function Home() {
               key={i}
               className="flex flex-col items-center text-center gap-4"
             >
-              <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold !text-white">
                 {i + 1}
               </div>
               <h3 className="text-lg font-semibold">{step.title}</h3>
