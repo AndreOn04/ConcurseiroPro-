@@ -42,6 +42,9 @@ export const authOptions: NextAuthOptions = {
 
         if (!senhaCorreta) return null;
 
+        if(!user.emailConfirmado) {
+          throw new Error("EMAIL_NAO_CONFIRMADO");
+        }
         return user;
       },
     }),

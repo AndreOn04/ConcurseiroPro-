@@ -12,6 +12,7 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  emailConfirmado Boolean  @default(false)
   image         String?
   password      String? 
   createdAt     DateTime  @default(now())
@@ -148,4 +149,14 @@ model Resposta {
 
   questao   Questao            @relation(fields: [questaoId], references: [id])
   tentativa SimulacaoTentativa @relation(fields: [tentativaId], references: [id], onDelete: Cascade)
+}
+
+model CodigoVerificacao {
+  id        String   @id @default(cuid())
+  email     String
+  codigo    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
 }
