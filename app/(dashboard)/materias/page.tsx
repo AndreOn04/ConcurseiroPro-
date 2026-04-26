@@ -21,8 +21,15 @@ export default function MateriasPage() {
   const [modalAberto, setModalAberto] = useState(false);
   const [novaMateria, setNovaMateria] = useState({ nome: "", cor: "#6366f1" });
   const [topicoInput, setTopicoInput] = useState<{ [key: string]: string }>({});
-  const [editandoMateria, setEditandoMateria] = useState<{ id: string; nome: string; cor: string } | null>(null);
-  const [editandoTopico, setEditandoTopico] = useState<{ id: string; nome: string } | null>(null);
+  const [editandoMateria, setEditandoMateria] = useState<{
+    id: string;
+    nome: string;
+    cor: string;
+  } | null>(null);
+  const [editandoTopico, setEditandoTopico] = useState<{
+    id: string;
+    nome: string;
+  } | null>(null);
 
   async function carregarMaterias() {
     const res = await fetch("/api/materias");
@@ -57,14 +64,22 @@ export default function MateriasPage() {
     await fetch(`/api/materias/${editandoMateria.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome: editandoMateria.nome, cor: editandoMateria.cor }),
+      body: JSON.stringify({
+        nome: editandoMateria.nome,
+        cor: editandoMateria.cor,
+      }),
     });
     setEditandoMateria(null);
     carregarMaterias();
   }
 
   async function deletarMateria(id: string, nome: string) {
-    if (!confirm(`Deseja realmente excluir a matéria "${nome}"? Todos os tópicos serão perdidos.`)) return;
+    if (
+      !confirm(
+        `Deseja realmente excluir a matéria "${nome}"? Todos os tópicos serão perdidos.`,
+      )
+    )
+      return;
     await fetch(`/api/materias/${id}`, { method: "DELETE" });
     carregarMaterias();
   }
@@ -133,27 +148,46 @@ export default function MateriasPage() {
         <div className="bg-slate-900 border border-slate-800 rounded-xl p-12 text-center">
           <p className="text-4xl mb-3">📚</p>
           <p className="text-white font-medium">Nenhuma matéria cadastrada</p>
-          <p className="text-slate-400 text-sm mt-1">Clique em "Nova Matéria" para começar.</p>
+          <p className="text-slate-400 text-sm mt-1">
+            Clique em "Nova Matéria" para começar.
+          </p>
         </div>
       ) : (
         <div className="flex flex-col gap-4">
           {materias.map((materia) => {
-            const concluidos = materia.topicos.filter((t) => t.concluido).length;
+            const concluidos = materia.topicos.filter(
+              (t) => t.concluido,
+            ).length;
             const total = materia.topicos.length;
-            const progresso = total > 0 ? Math.round((concluidos / total) * 100) : 0;
+            const progresso =
+              total > 0 ? Math.round((concluidos / total) * 100) : 0;
 
             return (
-              <div key={materia.id} className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col gap-4">
+              <div
+                key={materia.id}
+                className="bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col gap-4"
+              >
                 {/* Header da matéria */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: materia.cor }} />
+                    <div
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: materia.cor }}
+                    />
                     <h2 className="text-white font-semibold">{materia.nome}</h2>
-                    <span className="text-slate-500 text-xs">{concluidos}/{total} tópicos • {progresso}%</span>
+                    <span className="text-slate-500 text-xs">
+                      {concluidos}/{total} tópicos • {progresso}%
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={() => setEditandoMateria({ id: materia.id, nome: materia.nome, cor: materia.cor })}
+                      onClick={() =>
+                        setEditandoMateria({
+                          id: materia.id,
+                          nome: materia.nome,
+                          cor: materia.cor,
+                        })
+                      }
                       className="text-slate-500 hover:text-indigo-400 transition-colors text-sm"
                       title="Editar matéria"
                     >
@@ -174,7 +208,10 @@ export default function MateriasPage() {
                   <div className="w-full bg-slate-800 rounded-full h-1.5">
                     <div
                       className="h-1.5 rounded-full transition-all"
-                      style={{ width: `${progresso}%`, backgroundColor: materia.cor }}
+                      style={{
+                        width: `${progresso}%`,
+                        backgroundColor: materia.cor,
+                      }}
                     />
                   </div>
                 )}
@@ -182,21 +219,37 @@ export default function MateriasPage() {
                 {/* Tópicos */}
                 <div className="flex flex-col gap-2">
                   {materia.topicos.map((topico) => (
-                    <div key={topico.id} className="flex items-center justify-between bg-slate-800 rounded-lg px-4 py-2.5">
+                    <div
+                      key={topico.id}
+                      className="flex items-center justify-between bg-slate-800 rounded-lg px-4 py-2.5"
+                    >
                       <div className="flex items-center gap-3">
                         <input
                           type="checkbox"
                           checked={topico.concluido}
-                          onChange={() => toggleTopico(topico.id, topico.concluido)}
+                          onChange={() =>
+                            toggleTopico(topico.id, topico.concluido)
+                          }
                           className="accent-indigo-500 w-4 h-4 cursor-pointer"
                         />
-                        <span className={`text-sm ${topico.concluido ? "line-through text-slate-500" : "text-slate-200"}`}>
+                        <span
+                          className={`text-sm ${
+                            topico.concluido
+                              ? "line-through text-slate-500"
+                              : "text-slate-800 dark:text-slate-200"
+                          }`}
+                        >
                           {topico.nome}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => setEditandoTopico({ id: topico.id, nome: topico.nome })}
+                          onClick={() =>
+                            setEditandoTopico({
+                              id: topico.id,
+                              nome: topico.nome,
+                            })
+                          }
                           className="text-slate-600 hover:text-indigo-400 transition-colors text-xs"
                           title="Editar tópico"
                         >
@@ -220,8 +273,15 @@ export default function MateriasPage() {
                     type="text"
                     placeholder="Adicionar tópico..."
                     value={topicoInput[materia.id] ?? ""}
-                    onChange={(e) => setTopicoInput({ ...topicoInput, [materia.id]: e.target.value })}
-                    onKeyDown={(e) => { if (e.key === "Enter") criarTopico(materia.id); }}
+                    onChange={(e) =>
+                      setTopicoInput({
+                        ...topicoInput,
+                        [materia.id]: e.target.value,
+                      })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") criarTopico(materia.id);
+                    }}
                     className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
                   />
                   <button
@@ -247,7 +307,9 @@ export default function MateriasPage() {
                 type="text"
                 placeholder="Nome da matéria"
                 value={novaMateria.nome}
-                onChange={(e) => setNovaMateria({ ...novaMateria, nome: e.target.value })}
+                onChange={(e) =>
+                  setNovaMateria({ ...novaMateria, nome: e.target.value })
+                }
                 required
                 className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
               />
@@ -256,7 +318,9 @@ export default function MateriasPage() {
                 <input
                   type="color"
                   value={novaMateria.cor}
-                  onChange={(e) => setNovaMateria({ ...novaMateria, cor: e.target.value })}
+                  onChange={(e) =>
+                    setNovaMateria({ ...novaMateria, cor: e.target.value })
+                  }
                   className="w-10 h-10 rounded cursor-pointer bg-transparent border-0"
                 />
               </div>
@@ -285,11 +349,19 @@ export default function MateriasPage() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 w-full max-w-md flex flex-col gap-5">
             <h2 className="text-white font-bold text-lg">Editar Matéria</h2>
-            <form onSubmit={salvarEdicaoMateria} className="flex flex-col gap-4">
+            <form
+              onSubmit={salvarEdicaoMateria}
+              className="flex flex-col gap-4"
+            >
               <input
                 type="text"
                 value={editandoMateria.nome}
-                onChange={(e) => setEditandoMateria({ ...editandoMateria, nome: e.target.value })}
+                onChange={(e) =>
+                  setEditandoMateria({
+                    ...editandoMateria,
+                    nome: e.target.value,
+                  })
+                }
                 required
                 className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500"
               />
@@ -298,7 +370,12 @@ export default function MateriasPage() {
                 <input
                   type="color"
                   value={editandoMateria.cor}
-                  onChange={(e) => setEditandoMateria({ ...editandoMateria, cor: e.target.value })}
+                  onChange={(e) =>
+                    setEditandoMateria({
+                      ...editandoMateria,
+                      cor: e.target.value,
+                    })
+                  }
                   className="w-10 h-10 rounded cursor-pointer bg-transparent border-0"
                 />
               </div>
@@ -331,7 +408,9 @@ export default function MateriasPage() {
               <input
                 type="text"
                 value={editandoTopico.nome}
-                onChange={(e) => setEditandoTopico({ ...editandoTopico, nome: e.target.value })}
+                onChange={(e) =>
+                  setEditandoTopico({ ...editandoTopico, nome: e.target.value })
+                }
                 required
                 className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500"
               />
