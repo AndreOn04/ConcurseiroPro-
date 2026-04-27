@@ -28,6 +28,11 @@ export async function POST(req: Request) {
 
     await enviarCodigoVerificacao(email, codigo);
 
+    await prisma.user.update({
+      where: { email },
+      data: { emailVerified: new Date() }
+    });
+
     return NextResponse.json({ message: "Código enviado!" });
   } catch (error: any) {
     console.error("ERRO COMPLETO:", {
