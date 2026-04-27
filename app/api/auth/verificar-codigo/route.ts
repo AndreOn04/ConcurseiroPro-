@@ -1,45 +1,56 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { enviarCodigoVerificacao } from "@/lib/email";
-
-function gerarCodigo() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const { email, codigo, name, password } = await req.json();
 
-    if(!email) {
-      return NextResponse.json({ error: " E-mail obrigatório. " }, { status: 400 });
+    if (!email || !codigo) {
+      return NextResponse.json({ error: "Campos obrigatórios." }, { status: 400 });
     }
 
-    console.log("EMAIL_USER:", process.env.EMAIL_USER ? "definido" : "NÃO DEFINIDO");
-    console.log("EMAIL_PASS:", process.env.EMAIL_PASS ? "definido" : "NÃO DEFINIDO");
-
-    await prisma.codigoVerificacao.deleteMany({ where: {email} });
-
-    const codigo = gerarCodigo();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000 );
-
-    await prisma.codigoVerificacao.create({
-      data: { email, codigo, expiresAt },
+    const registro = await prisma.codigoVerificacao.findFirst({
+      where: { email, codigo },
     });
 
-    await enviarCodigoVerificacao(email, codigo);
+    if (!registro) {
+      return NextResponse.json({ error: "Código inválido." }, { status: 400 });
+    }
 
-    await prisma.user.update({
-      where: { email },
-      data: { emailVerified: new Date() }
-    });
+    if (registro.expiresAt < new Date()) {
+      await prisma.codigoVerificacao.delete({ where: { id: registro.id } });
+      return NextResponse.json({ error: "Código expirado." }, { status: 400 });
+    }
 
-    return NextResponse.json({ message: "Código enviado!" });
-  } catch (error: any) {
-    console.error("ERRO COMPLETO:", {
-      message: error.message,
-      code: error.response,
-      response: error.response,
-    });
-    return NextResponse.json({ error: "Erro ao enviar código." }, { status: 400 });
+    const usuarioExiste = await prisma.user.findUnique({ where: { email } });
+
+    if (!usuarioExiste && name && password) {
+      const senhaCriptografada = await bcrypt.hash(password, 10);
+      await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: senhaCriptografada,
+          emailConfirmado: true,
+          emailVerified: new Date(),
+        },
+      });
+    } else if (usuarioExiste) {
+      await prisma.user.update({
+        where: { email },
+        data: {
+          emailConfirmado: true,
+          emailVerified: new Date(),
+        },
+      });
+    }
+
+    await prisma.codigoVerificacao.delete({ where: { id: registro.id } });
+
+    return NextResponse.json({ message: "E-mail verificado com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao verificar código:", error);
+    return NextResponse.json({ error: "Erro ao verificar código." }, { status: 500 });
   }
 }

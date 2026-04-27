@@ -20,10 +20,6 @@ export default function LoginPage() {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [codigo, setCodigo] = useState("");
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  console.log("Usuário encontrado:", user ? "Sim" : "Não");
-  console.log("E-mail verificado em:", user?.emailVerified);
-
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErro("");
