@@ -149,7 +149,7 @@ export default function TimerPage() {
     <div className="flex flex-col gap-8">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Timer Pomodoro</h1>
+        <h1 className="text-2xl font-bold text-white">Pomodoro</h1>
         <p className="text-slate-400 text-sm mt-1">
           Estude com foco usando sessões cronometradas.
         </p>

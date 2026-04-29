@@ -11,6 +11,8 @@ interface DashboardData {
   percentualTopicos: number;
 }
 
+import { Timer, CalendarDaysIcon, BookCopyIcon, CheckIcon, BookOpen } from "lucide-react";
+
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,42 +37,44 @@ export default function DashboardPage() {
 
   const stats = [
     {
-      icon: "⏱️",
+      icon: Timer,
       value: loading ? "..." : formatarHoras(data?.horasHoje ?? 0),
       label: "Horas estudadas hoje",
     },
     {
-      icon: "📚",
+      icon: BookCopyIcon,
       value: loading ? "..." : String(data?.totalMaterias ?? 0),
       label: "Matérias cadastradas",
     },
     {
-      icon: "✅",
+      icon: CheckIcon,
       value: loading ? "..." : `${data?.percentualTopicos ?? 0}%`,
       label: "Tópicos concluídos",
     },
     {
-      icon: "📖",
-      value: loading ? "..." : `${data?.topicosConcluidos ?? 0}/${data?.totalTopicos ?? 0}`,
+      icon: BookOpen,
+      value: loading
+        ? "..."
+        : `${data?.topicosConcluidos ?? 0}/${data?.totalTopicos ?? 0}`,
       label: "Tópicos no total",
     },
   ];
 
   const quickAccess = [
     {
-      icon: "⏱️",
-      label: "Iniciar Timer",
+      icon: Timer,
+      label: "Iniciar Pomodoro",
       description: "Começar uma sessão Pomodoro",
       href: "/timer",
     },
     {
-      icon: "📅",
+      icon: CalendarDaysIcon,
       label: "Ver Cronograma",
       description: "Consultar seu planejamento",
       href: "/cronograma",
     },
     {
-      icon: "📚",
+      icon: BookCopyIcon,
       label: "Ver Matérias",
       description: "Gerenciar suas disciplinas",
       href: "/materias",
@@ -89,35 +93,45 @@ export default function DashboardPage() {
 
       {/* Cards de resumo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-2"
-          >
-            <span className="text-2xl">{stat.icon}</span>
-            <span className="text-2xl font-bold text-white">{stat.value}</span>
-            <span className="text-slate-400 text-sm">{stat.label}</span>
-          </div>
-        ))}
+        {stats.map((stat) => {
+          const IconRender = stat.icon;
+          return (
+            <div
+              key={stat.label}
+              className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-2"
+            >
+              <span className="text-2xl">
+                <IconRender />
+              </span>
+              <span className="text-2xl font-bold text-white">
+                {stat.value}
+              </span>
+              <span className="text-slate-400 text-sm">{stat.label}</span>
+            </div>
+          );
+        })}
       </div>
 
       {/* Acesso rápido */}
       <div>
         <h2 className="text-lg font-semibold text-white mb-4">Acesso Rápido</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {quickAccess.map((item) => (
-            <Link
-              key={item.label}
-              href={item.href}
-              className="bg-slate-900 border border-slate-800 hover:border-indigo-700 transition-colors rounded-xl p-5 flex items-center gap-4"
-            >
-              <span className="text-3xl">{item.icon}</span>
-              <div>
-                <p className="text-white font-medium">{item.label}</p>
-                <p className="text-slate-400 text-xs">{item.description}</p>
-              </div>
-            </Link>
-          ))}
+          {quickAccess.map((item) => {
+          const IconRender = item.icon;
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="bg-slate-900 border border-slate-800 hover:border-indigo-700 transition-colors rounded-xl p-5 flex items-center gap-4"
+              >
+                <span className="text-3xl"><IconRender /></span>
+                <div>
+                  <p className="text-white font-medium">{item.label}</p>
+                  <p className="text-slate-400 text-xs">{item.description}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

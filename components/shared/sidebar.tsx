@@ -1,21 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "./theme-toggle";
+import {
+  LayoutDashboard,
+  CalendarDays,
+  BookOpen,
+  Timer,
+  FileText,
+  BarChart2,
+  ArrowBigLeft,
+} from "lucide-react";
 
 const navItems = [
-  { href: "/dashboard", label: "Visão Geral", icon: "🏠" },
-  { href: "/cronograma", label: "Cronograma", icon: "🗓️" },
-  { href: "/materias", label: "Matérias", icon: "📚" },
-  { href: "/timer", label: "Pomodoro", icon: "⏱️" },
-  // { href: "/simulacoes", label: "Questões & Simulados", icon: "📝" },
-  { href: "/relatorias", label: "Relatórios", icon: "📊" },
+  { href: "/dashboard", label: "Visão Geral", icon: LayoutDashboard },
+  { href: "/cronograma", label: "Cronograma", icon: CalendarDays },
+  { href: "/materias", label: "Matérias", icon: BookOpen },
+  { href: "/timer", label: "Pomodoro", icon: Timer },
+  { href: "/simulacoes", label: "Questões & Simulados", icon: FileText },
+  { href: "/relatorias", label: "Relatórios", icon: BarChart2 },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
-
+  const [showConfirm, setShowConfirm] = useState(false);
   return (
     <aside className="w-64 min-h-screen bg-slate-900 border-r border-slate-800 flex flex-col">
       <div className="px-6 py-6 border-b border-slate-800">
@@ -29,13 +38,14 @@ export function Sidebar() {
       <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
+          const Icon = item.icon;
           return (
             <Link
               key={item.href}
               href={item.href}
               className={` flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive ? "bg-indigo-600 text-white" : "text-slate-400 hover:bg-slate-800 hover:text-white"} `}
             >
-              <span>{item.icon}</span>
+              <Icon size={18} />
               {item.label}
             </Link>
           );
@@ -44,13 +54,33 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="px-6 py-4 border-t border-slate-800 flex flex-col gap-3">
-        <ThemeToggle />
-        <Link
-          href="/"
-          className="text-slate-600 hover:text-slate-400 text-xs transition-colors"
-        >
-          ← Voltar ao início
-        </Link>
+        {showConfirm ? (
+          <div className="flex items-center gap-3 animate-in fade-in duration-300">
+            <span className="text-slate-400 text-sm">
+              {" "}
+              Tem certeza que realmente deseja sair?{" "}
+            </span>
+            <Link
+              href="/login"
+              className="text-slate-600 flex items-center gap-2 hover:text-slate-400 text-xs transition-colors"
+            >
+              Sim
+            </Link>
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="text-slate-600 hover:text-slate-400 cursor-pointer text-sm transition-colors"
+            >
+              Não
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setShowConfirm(true)}
+            className="text-slate-600 flex items-center gap-2 hover:text-slate-400 text-xs transition-colors"
+          >
+            <ArrowBigLeft size={20} /> Voltar ao início
+          </button>
+        )}
       </div>
     </aside>
   );
