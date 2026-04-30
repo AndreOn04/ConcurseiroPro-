@@ -18,7 +18,7 @@ const navItems = [
   { href: "/cronograma", label: "Cronograma", icon: CalendarDays },
   { href: "/materias", label: "Matérias", icon: BookOpen },
   { href: "/timer", label: "Pomodoro", icon: Timer },
-  { href: "/simulacoes", label: "Questões & Simulados", icon: FileText },
+  { href: "/simulacoes", label: "Questões", icon: FileText },
   { href: "/relatorias", label: "Relatórios", icon: BarChart2 },
 ];
 

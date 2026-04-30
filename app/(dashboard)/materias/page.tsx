@@ -15,6 +15,11 @@ interface Materia {
   topicos: Topico[];
 }
 
+import {
+  PenIcon,
+  Trash2Icon
+} from "lucide-react"
+
 export default function MateriasPage() {
   const [materias, setMaterias] = useState<Materia[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +46,7 @@ export default function MateriasPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     carregarMaterias();
   }, []);
 
@@ -149,7 +155,7 @@ export default function MateriasPage() {
           <p className="text-4xl mb-3">📚</p>
           <p className="text-white font-medium">Nenhuma matéria cadastrada</p>
           <p className="text-slate-400 text-sm mt-1">
-            Clique em "Nova Matéria" para começar.
+            Clique em `Nova Matéria` para começar.
           </p>
         </div>
       ) : (
@@ -188,17 +194,17 @@ export default function MateriasPage() {
                           cor: materia.cor,
                         })
                       }
-                      className="text-slate-500 hover:text-indigo-400 transition-colors text-sm"
+                      className="text-slate-500 hover:text-indigo-400 cursor-pointer transition-colors text-sm"
                       title="Editar matéria"
                     >
-                      ✏️
+                      <PenIcon size={20} />
                     </button>
                     <button
                       onClick={() => deletarMateria(materia.id, materia.nome)}
-                      className="text-slate-500 hover:text-red-400 transition-colors text-sm"
+                      className="text-slate-500 hover:text-red-400 cursor-pointer transition-colors text-sm"
                       title="Excluir matéria"
                     >
-                      🗑️
+                      <Trash2Icon size={20} />
                     </button>
                   </div>
                 </div>

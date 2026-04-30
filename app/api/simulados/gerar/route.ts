@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import Groq from "groq-sdk";
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
@@ -35,25 +38,13 @@ Onde "gabarito" é o índice (0-4) da alternativa correta.
 As questões devem ser no estilo CESPE, FCC ou VUNESP.`;
 
   try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-        }),
-      }
-    );
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+    });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      console.error("Erro Gemini:", data);
-      return NextResponse.json({ error: "Erro na API do Gemini.", detalhes: data }, { status: 500 });
-    }
-
-    const text = data.candidates[0].content.parts[0].text;
+    const text = completion.choices[0].message.content ?? "";
     const clean = text.replace(/```json|```/g, "").trim();
     const parsed = JSON.parse(clean);
 
