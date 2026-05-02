@@ -233,7 +233,7 @@ export default function LoginPage() {
                   setAba("entrar");
                   setErro("");
                 }}
-                className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`flex-1 py-2 rounded-md text-sm cursor-pointer font-medium transition-colors ${
                   aba === "entrar"
                     ? "bg-indigo-600 text-white"
                     : "text-slate-400 hover:text-white"
@@ -246,7 +246,7 @@ export default function LoginPage() {
                   setAba("cadastrar");
                   setErro("");
                 }}
-                className={`flex-1 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`flex-1 py-2 rounded-md text-sm cursor-pointer font-medium transition-colors ${
                   aba === "cadastrar"
                     ? "bg-indigo-600 text-white"
                     : "text-slate-400 hover:text-white"

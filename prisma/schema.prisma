@@ -17,6 +17,8 @@ model User {
   password      String? 
   createdAt     DateTime  @default(now())
 
+  ciclos      CicloEstudo[]
+
   accounts    Account[]
   sessions    Session[]
   materias    Materia[]
@@ -159,4 +161,42 @@ model CodigoVerificacao {
   createdAt DateTime @default(now())
 
   @@index([email])
+}
+
+model CicloEstudo {
+  id        String   @id @default(cuid())
+  nome      String
+  tipo      String
+  userId    String
+  ativo     Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user     User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessoes  CicloSessao[]
+  materias CicloMateria[]
+}
+
+model CicloMateria {
+  id          String  @id @default(cuid())
+  cicloId     String
+  nome        String
+  dificuldade String
+  prioridade  String
+  cor         String  @default("#6366f1")
+  materiaId   String?
+
+  ciclo CicloEstudo @relation(fields: [cicloId], references: [id], onDelete: Cascade)
+}
+
+model CicloSessao {
+  id          String @id @default(cuid())
+  cicloId     String
+  dia         Int
+  horaInicio  String
+  horaFim     String
+  materiaId   String
+  materiaNome String
+  cor         String @default("#6366f1")
+
+  ciclo CicloEstudo @relation(fields: [cicloId], references: [id], onDelete: Cascade)
 }

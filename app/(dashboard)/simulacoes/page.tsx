@@ -121,8 +121,8 @@ export default function SimulacoesPage() {
           </p>
         </div>
 
-        <div className="max-w-lg bg-slate-900 border border-slate-800 rounded-xl p-8">
-          <h2 className="text-white font-semibold mb-6">Configurar Simulado</h2>
+        <div className="w-full bg-slate-900 border border-slate-800 rounded-xl p-8">
+          <h2 className="text-white font-semibold mb-6">Personalizar Questões</h2>
           <form onSubmit={gerarSimulado} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
               <label className="text-slate-400 text-xs">Matéria *</label>
@@ -172,7 +172,7 @@ export default function SimulacoesPage() {
             <button
               type="submit"
               disabled={carregando}
-              className="bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 transition-colors py-3 rounded-lg text-sm font-semibold text-white mt-2"
+              className="bg-indigo-600 hover:bg-indigo-500 cursor-pointer disabled:opacity-50 transition-colors py-3 rounded-lg text-sm font-semibold text-white mt-2"
             >
               {carregando
                 ? "🤖 Gerando questões com IA..."
@@ -408,12 +408,32 @@ export default function SimulacoesPage() {
               {/* Comentário da IA */}
               {comentarios[i] ? (
                 <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
-                  <p className="text-indigo-400 text-xs font-semibold mb-2">
+                  <p className="text-indigo-400 text-xs font-semibold mb-3">
                     🤖 Comentário da IA
                   </p>
-                  <p className="text-slate-300 text-sm leading-relaxed whitespace-pre-wrap">
-                    {comentarios[i]}
-                  </p>
+                  <style>{`
+                        .comentario-ia .correto {
+                          color: #4ade80;
+                          font-weight: 500;
+                        }
+                        .comentario-ia .incorreto {
+                          color: #f87171;
+                          font-weight: 500;
+                        }
+                        .comentario-ia strong {
+                          color: #e2e8f0;
+                          font-weight: 700;
+                        }
+                        .comentario-ia u {
+                          text-decoration: underline;
+                          text-underline-offset: 3px;
+                          color: #a5b4fc;
+                        }
+                      `}</style>
+                  <div
+                    className="comentario-ia text-slate-300 text-sm leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: comentarios[i] }}
+                  />
                 </div>
               ) : (
                 <button

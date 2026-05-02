@@ -1,5 +1,15 @@
 import { Sidebar } from "@/components/shared/sidebar";
 import Header  from "@/components/shared/header";
+import { Metadata } from "next";
+
+export const metaData: Metadata = {
+  title: "ConcurseiroPro",
+  description: "Sua plataforma gratuita de estudos para concursos públicos.",
+  icons: {
+    icon: "/public/favicon.png",
+    apple: "/public/favicon.png"
+  }
+}
 
 export default function DashboardLayout({
   children,

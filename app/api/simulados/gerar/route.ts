@@ -34,6 +34,7 @@ O JSON deve seguir exatamente este formato:
     }
   ]
 }
+
 Onde "gabarito" é o índice (0-4) da alternativa correta.
 As questões devem ser no estilo CESPE, FCC ou VUNESP.`;
 

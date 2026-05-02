@@ -11,6 +11,7 @@ import {
   FileText,
   BarChart2,
   ArrowBigLeft,
+  RefreshCcw,
 } from "lucide-react";
 
 const navItems = [
@@ -19,23 +20,25 @@ const navItems = [
   { href: "/materias", label: "Matérias", icon: BookOpen },
   { href: "/timer", label: "Pomodoro", icon: Timer },
   { href: "/simulacoes", label: "Questões", icon: FileText },
-  { href: "/relatorias", label: "Relatórios", icon: BarChart2 },
+  { href: "/ciclos", label: "Ciclos", icon: RefreshCcw },
+  { href: "/relatorios", label: "Relatórios", icon: BarChart2 },
 ];
 
 export function Sidebar() {
   const pathname = usePathname();
   const [showConfirm, setShowConfirm] = useState(false);
   return (
-    <aside className="w-64 min-h-screen bg-slate-900 border-r border-slate-800 flex flex-col">
-      <div className="px-6 py-6 border-b border-slate-800">
+    <aside className="w-64 h-screen sticky top-0 bg-slate-900 dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden">
+      <div className="px-6 py-6">
+        {" "}
+        {/* border-b border-slate-800 */}
         <div className="flex items-center gap-3">
           <span className="text-xl font-bold text-indigo-400">
             ConcurseiroPro
           </span>
         </div>
       </div>
-
-      <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
+      <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
@@ -43,7 +46,7 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={` flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive ? "bg-indigo-600 text-white" : "text-slate-400 hover:bg-slate-800 hover:text-white"} `}
+              className={` flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive ? "bg-indigo-600 text-white" : "text-white hover:bg-slate-200 hover:text-black"} `}
             >
               <Icon size={18} />
               {item.label}
