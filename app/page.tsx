@@ -4,6 +4,7 @@ import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { title } from "process";
 
 import { useState } from "react";
+import { BannerBeta } from "@/components/shared/banner";
 
 function FaqItem({
   pergunta,
@@ -36,6 +37,7 @@ function FaqItem({
 export default function Home() {
   return (
     <main className="min-h-scree bg-slate-950 text-white">
+      <BannerBeta />
       {/* NavBar */}
       <nav className="flex items-center justify-between px-8 py-5 border-b border-slate-200 dark:border-slate-800">
         <span className="text-xl font-bold text-indigo-600 dark:text-indigo-400">
